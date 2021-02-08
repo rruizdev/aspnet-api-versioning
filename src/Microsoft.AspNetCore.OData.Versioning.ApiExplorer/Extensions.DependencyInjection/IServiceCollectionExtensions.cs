@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore.Mvc.ApiExplorer;
     using Microsoft.AspNetCore.Mvc.Versioning;
+    using Microsoft.AspNetCore.OData;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Options;
     using System;
@@ -40,32 +41,9 @@
         static void AddApiExplorerServices( IServiceCollection services )
         {
             services.AddVersionedApiExplorer();
+            services.TryAddSingleton<IModelTypeBuilder, DefaultModelTypeBuilder>();
             services.TryAdd( Singleton<IOptionsFactory<ODataApiExplorerOptions>, ApiExplorerOptionsFactory<ODataApiExplorerOptions>>() );
-            services.Replace( Singleton<IOptionsFactory<ApiExplorerOptions>, ODataApiExplorerOptionsAdapter>() );
             services.TryAddEnumerable( Transient<IApiDescriptionProvider, ODataApiDescriptionProvider>() );
         }
-
-#pragma warning disable CA1812
-        sealed class ODataApiExplorerOptionsAdapter : IOptionsFactory<ApiExplorerOptions>
-        {
-            readonly IOptions<ODataApiVersioningOptions> options;
-            readonly IOptionsFactory<ODataApiExplorerOptions> factory;
-
-            public ODataApiExplorerOptionsAdapter(
-                IOptions<ODataApiVersioningOptions> options,
-                IOptionsFactory<ODataApiExplorerOptions> factory )
-            {
-                this.options = options;
-                this.factory = factory;
-            }
-
-            public ApiExplorerOptions Create( string name )
-            {
-                var newOptions = factory.Create( name );
-                newOptions.UseQualifiedNames = options.Value.UseQualifiedNames;
-                return newOptions;
-            }
-        }
-#pragma warning restore CA1812
     }
 }

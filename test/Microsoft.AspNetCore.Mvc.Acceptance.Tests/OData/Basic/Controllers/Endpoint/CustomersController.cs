@@ -1,8 +1,8 @@
 ﻿namespace Microsoft.AspNetCore.OData.Basic.Controllers.Endpoint
 {
-    using Microsoft.AspNet.OData;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.OData.Models;
+    using Microsoft.AspNetCore.OData.Routing.Controllers;
 
     [Route( "api/[controller]" )]
     public class CustomersController : ODataController

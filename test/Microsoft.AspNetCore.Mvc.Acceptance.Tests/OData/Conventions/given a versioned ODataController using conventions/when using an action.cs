@@ -7,8 +7,8 @@
     using Xunit;
     using static System.Net.HttpStatusCode;
 
-    [Trait( "Routing", "Classic" )]
-    [Collection( nameof( ConventionsODataCollection ) )]
+    [Trait( "Routing", "Endpoint" )]
+    [Collection( nameof( ConventionsODataEndpointCollection ) )]
     public class when_using_an_action : ODataAcceptanceTest
     {
         [Theory]
@@ -74,15 +74,6 @@
             response.StatusCode.Should().Be( NoContent );
         }
 
-        public when_using_an_action( ConventionsFixture fixture ) : base( fixture ) { }
-
-        protected when_using_an_action( ODataFixture fixture ) : base( fixture ) { }
-    }
-
-    [Trait( "Routing", "Endpoint" )]
-    [Collection( nameof( ConventionsODataEndpointCollection ) )]
-    public class when_using_an_action_ : when_using_an_action
-    {
-        public when_using_an_action_( ConventionsEndpointFixture fixture ) : base( fixture ) { }
+        public when_using_an_action( ConventionsEndpointFixture fixture ) : base( fixture ) { }
     }
 }

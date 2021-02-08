@@ -1,8 +1,8 @@
 ﻿namespace Microsoft.Examples.Configuration
 {
-    using Microsoft.AspNet.OData.Builder;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Examples.Models;
+    using Microsoft.OData.ModelBuilder;
     using System;
 
     /// <summary>
@@ -17,7 +17,20 @@
             var address = builder.EntityType<Address>().HasKey( a => a.Id );
 
             person.HasKey( p => p.Id );
-            person.Select().OrderBy( "firstName", "lastName" );
+
+            if ( apiVersion == ApiVersion.Neutral )
+            {
+                person.ContainsOptional( p => p.WorkAddress );
+                person.ContainsOptional( p => p.HomeAddress );
+                person.Action( "Promote" ).Parameter<string>( "title" );
+                
+                var function = person.Collection.Function( "NewHires" );
+
+                function.Parameter<DateTime>( "Since" );
+                function.ReturnsFromEntitySet<Person>( "People" );
+
+                return;
+            }
 
             if ( apiVersion < ApiVersions.V3 )
             {

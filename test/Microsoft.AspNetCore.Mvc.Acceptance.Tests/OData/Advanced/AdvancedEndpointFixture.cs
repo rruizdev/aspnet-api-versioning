@@ -1,14 +1,16 @@
 ﻿namespace Microsoft.AspNetCore.OData.Advanced
 {
-    using Microsoft.AspNet.OData.Builder;
-    using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.AspNetCore.Mvc.Versioning;
     using Microsoft.AspNetCore.OData.Advanced.Controllers.Endpoint;
     using Microsoft.AspNetCore.OData.Configuration;
-    using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
+    using Microsoft.Extensions.Options;
+    using Microsoft.OData.ModelBuilder;
     using System.Reflection;
+    using static Microsoft.Extensions.DependencyInjection.ServiceDescriptor;
 
     public class AdvancedEndpointFixture : ODataFixture
     {
@@ -31,16 +33,19 @@
                 new HeaderApiVersionReader( "api-version", "x-ms-version" ) );
         }
 
-        protected override void OnConfigureEndpoints( IEndpointRouteBuilder routeBuilder )
+        protected override void OnConfigureServices( IServiceCollection services )
         {
-            base.OnConfigureEndpoints( routeBuilder );
-
-            var modelBuilder = routeBuilder.ServiceProvider.GetRequiredService<VersionedODataModelBuilder>();
-
-            modelBuilder.ModelConfigurations.Clear();
-            modelBuilder.ModelConfigurations.Add( new PersonModelConfiguration() );
-            modelBuilder.ModelConfigurations.Add( new OrderModelConfiguration( supportedApiVersion: new ApiVersion( 2, 0 ) ) );
-            routeBuilder.MapVersionedODataRoute( "odata", "api", modelBuilder.GetEdmModels() );
+            services.Replace(
+                Transient( sp =>
+                    new VersionedODataModelBuilder(
+                        sp.GetRequiredService<IActionDescriptorCollectionProvider>(),
+                        sp.GetRequiredService<IOptions<ApiVersioningOptions>>(),
+                        new IModelConfiguration[]
+                        {
+                            new PersonModelConfiguration(),
+                            new OrderModelConfiguration( supportedApiVersion: new ApiVersion( 2, 0 ) )
+                        } ) ) );
+            services.AddOData().EnableApiVersioning( options => options.AddModels( "api" ) );
         }
     }
 }

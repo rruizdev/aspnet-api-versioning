@@ -3,6 +3,7 @@
     using Microsoft.AspNet.OData;
 #if !WEBAPI
     using Microsoft.AspNetCore.Mvc.ApiExplorer;
+    using Microsoft.OData.ModelBuilder;
 #endif
     using System;
     using System.Collections.Generic;
@@ -21,7 +22,7 @@
     {
         internal static Type? GetClrType( this IEdmType edmType, IEdmModel edmModel )
         {
-            if ( !( edmType is IEdmSchemaType schemaType ) )
+            if ( edmType is not IEdmSchemaType schemaType )
             {
                 return null;
             }

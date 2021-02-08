@@ -1,9 +1,9 @@
 ﻿namespace Microsoft.AspNetCore.OData.Basic.Controllers.Endpoint
 {
-    using Microsoft.AspNet.OData;
-    using Microsoft.AspNet.OData.Query;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.OData.Models;
+    using Microsoft.AspNetCore.OData.Query;
+    using Microsoft.AspNetCore.OData.Routing.Controllers;
 
     [ApiVersion( "3.0" )]
     [ControllerName( "People" )]

@@ -1,12 +1,25 @@
-﻿namespace Microsoft.AspNet.OData.Builder
+﻿#if WEBAPI
+namespace Microsoft.AspNet.OData.Builder
+#else
+namespace Microsoft.AspNetCore.OData.Query
+#endif
 {
+#if WEBAPI
     using Microsoft.AspNet.OData.Query;
+#else
+    using Microsoft.AspNetCore.OData.Query.Validator;
+#endif
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Reflection;
+#if WEBAPI
     using static Microsoft.AspNet.OData.Query.AllowedFunctions;
     using static Microsoft.AspNet.OData.Query.AllowedQueryOptions;
+#else
+    using static Microsoft.AspNetCore.OData.Query.AllowedFunctions;
+    using static Microsoft.AspNetCore.OData.Query.AllowedQueryOptions;
+#endif
     using static System.ComponentModel.EditorBrowsableState;
 
     /// <summary>

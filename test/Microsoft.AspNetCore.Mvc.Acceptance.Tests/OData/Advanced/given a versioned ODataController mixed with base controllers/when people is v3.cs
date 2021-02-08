@@ -9,8 +9,8 @@
     using Xunit;
     using static System.Net.HttpStatusCode;
 
-    [Trait( "Routing", "Classic" )]
-    [Collection( nameof( AdvancedODataCollection ) )]
+    [Trait( "Routing", "Endpoint" )]
+    [Collection( nameof( AdvancedODataEndpointCollection ) )]
     public class when_people_is_v3 : ODataAcceptanceTest
     {
         [Fact]
@@ -60,15 +60,6 @@
             content.Error.Code.Should().Be( "UnsupportedApiVersion" );
         }
 
-        public when_people_is_v3( AdvancedFixture fixture ) : base( fixture ) { }
-
-        protected when_people_is_v3( ODataFixture fixture ) : base( fixture ) { }
-    }
-
-    [Trait( "Routing", "Endpoint" )]
-    [Collection( nameof( AdvancedODataEndpointCollection ) )]
-    public class when_people_is_v3_ : when_people_is_v3
-    {
-        public when_people_is_v3_( AdvancedEndpointFixture fixture ) : base( fixture ) { }
+        public when_people_is_v3( AdvancedEndpointFixture fixture ) : base( fixture ) { }
     }
 }

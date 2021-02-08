@@ -1,16 +1,16 @@
 ﻿namespace Microsoft.Examples
 {
-    using Microsoft.AspNet.OData.Builder;
-    using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Mvc.ApiExplorer;
+    using Microsoft.AspNetCore.OData;
+    using Microsoft.AspNetCore.OData.Query;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
     using Microsoft.Extensions.PlatformAbstractions;
     using Swashbuckle.AspNetCore.SwaggerGen;
     using System.IO;
     using System.Reflection;
-    using static Microsoft.AspNet.OData.Query.AllowedQueryOptions;
+    using static Microsoft.AspNetCore.OData.Query.AllowedQueryOptions;
 
     /// <summary>
     /// Represents the startup process for the application.
@@ -25,7 +25,8 @@
         {
             services.AddControllers();
             services.AddApiVersioning( options => options.ReportApiVersions = true );
-            services.AddOData().EnableApiVersioning();
+            services.AddOData( options => options.Count() )
+                    .EnableApiVersioning( options => options.AddModels( "api" ) );
             services.AddODataApiExplorer(
                 options =>
                 {
@@ -66,17 +67,11 @@
         /// Configures the application using the provided builder, hosting environment, and logging factory.
         /// </summary>
         /// <param name="app">The current application builder.</param>
-        /// <param name="modelBuilder">The <see cref="VersionedODataModelBuilder">model builder</see> used to create OData entity data models (EDMs).</param>
         /// <param name="provider">The API version descriptor provider used to enumerate defined API versions.</param>
-        public void Configure( IApplicationBuilder app, VersionedODataModelBuilder modelBuilder, IApiVersionDescriptionProvider provider )
+        public void Configure( IApplicationBuilder app, IApiVersionDescriptionProvider provider )
         {
             app.UseRouting();
-            app.UseEndpoints(
-                endpoints =>
-                {
-                    endpoints.Count();
-                    endpoints.MapVersionedODataRoute( "odata", "api", modelBuilder );
-                } );
+            app.UseEndpoints( endpoints => endpoints.MapControllers() );
             app.UseSwagger();
             app.UseSwaggerUI(
                 options =>

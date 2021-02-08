@@ -137,7 +137,7 @@
             var request = controllerContext.Request;
             var properties = request.Properties;
 
-            if ( !properties.TryGetValue( AttributeRouteData, out var value ) || !( value is IDictionary<string, object> attributeRouteData ) )
+            if ( !properties.TryGetValue( AttributeRouteData, out var value ) || value is not IDictionary<string, object> attributeRouteData )
             {
                 return null;
             }

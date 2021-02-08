@@ -1,9 +1,8 @@
 ﻿namespace Microsoft.Examples
 {
-    using Microsoft.AspNet.OData.Builder;
-    using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Mvc.Versioning;
+    using Microsoft.AspNetCore.OData;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -34,18 +33,13 @@
                         new QueryStringApiVersionReader(),
                         new HeaderApiVersionReader( "api-version", "x-ms-version" ) );
                 } );
-            services.AddOData().EnableApiVersioning();
+            services.AddOData().EnableApiVersioning( options => options.AddModels( "api" ) );
         }
 
-        public void Configure( IApplicationBuilder app, VersionedODataModelBuilder modelBuilder )
+        public void Configure( IApplicationBuilder app )
         {
             app.UseRouting();
-            app.UseEndpoints(
-                endpoints =>
-                {
-                    endpoints.MapControllers();
-                    endpoints.MapVersionedODataRoute( "odata", "api", modelBuilder.GetEdmModels() );
-                } );
+            app.UseEndpoints( endpoints => endpoints.MapControllers() );
         }
     }
 }

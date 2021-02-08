@@ -2,6 +2,7 @@
 {
     using FluentAssertions;
     using Microsoft.AspNetCore.Mvc.ApiExplorer;
+    using Microsoft.AspNetCore.OData;
     using System.Linq;
     using Xunit;
 
@@ -17,6 +18,7 @@
             services.AddODataApiExplorer();
 
             // assert
+            services.Single( sd => sd.ServiceType == typeof( IModelTypeBuilder ) ).ImplementationType.Should().Be( typeof( DefaultModelTypeBuilder ) );
             services.Single( sd => sd.ServiceType == typeof( IApiVersionDescriptionProvider ) ).ImplementationType.Should().Be( typeof( DefaultApiVersionDescriptionProvider ) );
             services.Single( sd => sd.ImplementationType == typeof( VersionedApiDescriptionProvider ) ).ServiceType.Should().Be( typeof( IApiDescriptionProvider ) );
             services.Single( sd => sd.ImplementationType == typeof( ODataApiDescriptionProvider ) ).ServiceType.Should().Be( typeof( IApiDescriptionProvider ) );

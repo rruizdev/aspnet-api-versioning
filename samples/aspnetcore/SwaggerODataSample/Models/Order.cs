@@ -1,7 +1,6 @@
 ﻿namespace Microsoft.Examples.Models
 {
-    using Microsoft.AspNet.OData.Builder;
-    using Microsoft.AspNet.OData.Query;
+    using Microsoft.OData.ModelBuilder;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;

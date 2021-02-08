@@ -1,17 +1,17 @@
 ﻿namespace Microsoft.Simulators
 {
-    using Microsoft.AspNet.OData;
-    using Microsoft.AspNet.OData.Routing;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.OData.Routing.Attributes;
+    using Microsoft.AspNetCore.OData.Routing.Controllers;
 
     [ApiVersion( "1.0" )]
-    [ODataRoutePrefix( "Tests" )]
+    [ODataModel( "api" )]
     public class TestsController : ODataController
     {
-        [ODataRoute]
+        [HttpGet]
         public IActionResult Get() => Ok( new[] { new TestEntity() { Id = 1 }, new TestEntity() { Id = 2 }, new TestEntity() { Id = 3 } } );
 
-        [ODataRoute( "{id}" )]
-        public IActionResult Get( int id ) => Ok( new TestEntity() { Id = id } );
+        [HttpGet( "{key}" )]
+        public IActionResult Get( int key ) => Ok( new TestEntity() { Id = key } );
     }
 }

@@ -1,4 +1,8 @@
-﻿namespace Microsoft.AspNet.OData.Builder
+﻿#if WEBAPI
+namespace Microsoft.AspNet.OData.Builder
+#else
+namespace Microsoft.AspNetCore.OData.Query
+#endif
 {
 #if !WEBAPI
     using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -6,6 +10,7 @@
 #endif
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 #if WEBAPI
     using System.Web.Http.Controllers;
     using System.Web.Http.Description;
@@ -111,10 +116,10 @@
         /// <summary>
         /// Applies the defined OData query option conventions to the specified API description.
         /// </summary>
-        /// <param name="apiDescriptions">The <see cref="IEnumerable{T}">sequence</see> of <see cref="ApiDescription">API descriptions</see>
+        /// <param name="apiDescriptions">The <see cref="IReadOnlyList{T}">read-only list</see> of <see cref="ApiDescription">API descriptions</see>
         /// to apply configured conventions to.</param>
         /// <param name="queryOptionSettings">The <see cref="ODataQueryOptionSettings">settings</see> used to apply OData query option conventions.</param>
-        public virtual void ApplyTo( IEnumerable<ApiDescription> apiDescriptions, ODataQueryOptionSettings queryOptionSettings )
+        public virtual void ApplyTo( IReadOnlyList<ApiDescription> apiDescriptions, ODataQueryOptionSettings queryOptionSettings )
         {
             if ( apiDescriptions == null )
             {
@@ -123,8 +128,9 @@
 
             var conventions = new Dictionary<TypeInfo, IODataQueryOptionsConvention>();
 
-            foreach ( var description in apiDescriptions )
+            for ( var i = 0; i < apiDescriptions.Count; i++ )
             {
+                var description = apiDescriptions[i];
                 var controller = GetController( description );
 
                 if ( !conventions.TryGetValue( controller, out var convention ) )
@@ -145,9 +151,9 @@
 
                 convention.ApplyTo( description );
 
-                for ( var i = 0; i < Conventions.Count; i++ )
+                for ( var j = 0; j < Conventions.Count; j++ )
                 {
-                    Conventions[i].ApplyTo( description );
+                    Conventions[j].ApplyTo( description );
                 }
             }
         }

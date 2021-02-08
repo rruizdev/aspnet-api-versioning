@@ -1,8 +1,8 @@
 ﻿namespace Microsoft.Examples.Configuration
 {
-    using Microsoft.AspNet.OData.Builder;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Examples.Models;
+    using Microsoft.OData.ModelBuilder;
 
     /// <summary>
     /// Represents the model configuration for suppliers.
@@ -12,13 +12,11 @@
         /// <inheritdoc />
         public void Apply( ODataModelBuilder builder, ApiVersion apiVersion, string routePrefix )
         {
-            if ( apiVersion < ApiVersions.V3 )
+            if ( apiVersion >= ApiVersions.V3 || apiVersion == ApiVersion.Neutral )
             {
-                return;
+                builder.EntitySet<Supplier>( "Suppliers" ).EntityType.HasKey( p => p.Id );
+                builder.Singleton<Supplier>( "Acme" );
             }
-
-            builder.EntitySet<Supplier>( "Suppliers" ).EntityType.HasKey( p => p.Id );
-            builder.Singleton<Supplier>( "Acme" );
         }
     }
 }

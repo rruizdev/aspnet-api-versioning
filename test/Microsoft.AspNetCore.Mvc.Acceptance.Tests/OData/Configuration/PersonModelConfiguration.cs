@@ -1,8 +1,8 @@
 ﻿namespace Microsoft.AspNetCore.OData.Configuration
 {
-    using Microsoft.AspNet.OData.Builder;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.OData.Models;
+    using Microsoft.OData.ModelBuilder;
 
     public class PersonModelConfiguration : IModelConfiguration
     {

@@ -1,6 +1,12 @@
-﻿namespace Microsoft.AspNet.OData.Builder
+﻿#if WEBAPI
+namespace Microsoft.AspNet.OData.Builder
+#else
+namespace Microsoft.AspNetCore.OData.Query
+#endif
 {
+#if WEBAPI
     using Microsoft.AspNet.OData.Query;
+#endif
     using Microsoft.OData.Edm;
 #if WEBAPI
     using Microsoft.Web.Http;
@@ -15,9 +21,12 @@
     using System.Reflection;
 #if WEBAPI
     using System.Web.Http.Description;
-#endif
     using static Microsoft.AspNet.OData.Query.AllowedQueryOptions;
     using static Microsoft.AspNet.OData.Query.SelectExpandType;
+#else
+    using static Microsoft.AspNetCore.OData.Query.AllowedQueryOptions;
+    using static Microsoft.OData.ModelBuilder.SelectExpandType;
+#endif
     using static System.StringSplitOptions;
 
     sealed partial class ODataAttributeVisitor

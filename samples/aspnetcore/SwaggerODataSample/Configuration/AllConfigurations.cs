@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.Examples.Configuration
 {
-    using Microsoft.AspNet.OData.Builder;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.OData.ModelBuilder;
 
     /// <summary>
     /// Represents the model configuration for all configurations.

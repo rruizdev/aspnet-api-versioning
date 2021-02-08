@@ -1,12 +1,9 @@
 ﻿namespace Microsoft.AspNetCore.OData.Conventions
 {
-    using Microsoft.AspNet.OData.Builder;
-    using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Versioning;
     using Microsoft.AspNetCore.Mvc.Versioning.Conventions;
     using Microsoft.AspNetCore.OData.Conventions.Controllers;
-    using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.DependencyInjection;
     using System.Reflection;
 
@@ -40,13 +37,10 @@
                                        .Action( c => c.Delete( default ) ).IsApiVersionNeutral();
         }
 
-        protected override void OnConfigureEndpoints( IEndpointRouteBuilder routeBuilder )
-        {
-            var modelBuilder = routeBuilder.ServiceProvider.GetRequiredService<VersionedODataModelBuilder>();
-            var models = modelBuilder.GetEdmModels();
-
-            routeBuilder.MapVersionedODataRoute( "odata", "api", models );
-            routeBuilder.MapVersionedODataRoute( "odata-bypath", "v{version:apiVersion}", models );
-        }
+        protected override void OnConfigureServices( IServiceCollection services ) =>
+           services.AddOData()
+                   .EnableApiVersioning(
+                       options => options.AddModels( "api" )
+                                         .AddModels( "v{version:apiVersion}" ) );
     }
 }

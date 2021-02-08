@@ -1,20 +1,24 @@
 ﻿namespace Microsoft.Examples.V2
 {
-    using Microsoft.AspNet.OData;
-    using Microsoft.AspNet.OData.Query;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.OData;
+    using Microsoft.AspNetCore.OData.Query;
+    using Microsoft.AspNetCore.OData.Query.Validator;
+    using Microsoft.AspNetCore.OData.Routing.Attributes;
+    using Microsoft.AspNetCore.OData.Routing.Controllers;
     using Microsoft.Examples.Models;
     using Microsoft.OData;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using static Microsoft.AspNet.OData.Query.AllowedQueryOptions;
     using static Microsoft.AspNetCore.Http.StatusCodes;
+    using static Microsoft.AspNetCore.OData.Query.AllowedQueryOptions;
 
     /// <summary>
     /// Represents a RESTful people service.
     /// </summary>
     [ApiVersion( "2.0" )]
+    [ODataModel( "api" )]
     public class PeopleController : ODataController
     {
         /// <summary>
@@ -23,6 +27,7 @@
         /// <param name="options">The current OData query options.</param>
         /// <returns>All available people.</returns>
         /// <response code="200">The successfully retrieved people.</response>
+        [HttpGet]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( ODataValue<IEnumerable<Person>> ), Status200OK )]
         public IActionResult Get( ODataQueryOptions<Person> options )
@@ -83,6 +88,7 @@
         /// <returns>The requested person.</returns>
         /// <response code="200">The person was successfully retrieved.</response>
         /// <response code="404">The person does not exist.</response>
+        [HttpGet( "{key}" )]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( Person ), Status200OK )]
         [ProducesResponseType( Status404NotFound )]
@@ -116,7 +122,7 @@
         /// <param name="options">The current OData query options.</param>
         /// <returns>The matching new hires.</returns>
         /// <response code="200">The people were successfully retrieved.</response>
-        [HttpGet]
+        [HttpGet( "[action]" )]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( ODataValue<IEnumerable<Person>> ), Status200OK )]
         public IActionResult NewHires( DateTime since, ODataQueryOptions<Person> options ) => Get( options );
@@ -128,7 +134,7 @@
         /// <returns>The person's home address.</returns>
         /// <response code="200">The home address was successfully retrieved.</response>
         /// <response code="404">The person does not exist.</response>
-        [HttpGet]
+        [HttpGet( "{key}/HomeAddress" )]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( Address ), Status200OK )]
         [ProducesResponseType( Status404NotFound )]

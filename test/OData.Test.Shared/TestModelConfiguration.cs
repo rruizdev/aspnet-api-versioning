@@ -1,10 +1,11 @@
 ﻿namespace Microsoft
 {
-    using Microsoft.AspNet.OData.Builder;
 #if WEBAPI
+    using Microsoft.AspNet.OData.Builder;
     using Microsoft.Web.Http;
 #else
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.OData.ModelBuilder;
 #endif
     using System;
 

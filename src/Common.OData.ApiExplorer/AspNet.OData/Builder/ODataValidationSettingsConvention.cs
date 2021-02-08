@@ -1,14 +1,22 @@
-﻿namespace Microsoft.AspNet.OData.Builder
+﻿#if WEBAPI
+namespace Microsoft.AspNet.OData.Builder
+#else
+namespace Microsoft.AspNetCore.OData.Query
+#endif
 {
+#if WEBAPI
     using Microsoft.AspNet.OData.Query;
-#if !WEBAPI
+#else
     using Microsoft.AspNetCore.Mvc.ApiExplorer;
+    using Microsoft.AspNetCore.OData.Query.Validator;
 #endif
     using System;
 #if WEBAPI
     using System.Web.Http.Description;
-#endif
     using static Microsoft.AspNet.OData.Query.AllowedQueryOptions;
+#else
+    using static Microsoft.AspNetCore.OData.Query.AllowedQueryOptions;
+#endif
 
     /// <summary>
     /// Represents an OData query options convention based on <see cref="ODataValidationSettings">validation settings</see>.

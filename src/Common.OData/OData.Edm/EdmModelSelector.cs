@@ -88,7 +88,8 @@
 #if WEBAPI
             var version = serviceProvider.GetService<HttpRequestMessage>()?.GetRequestedApiVersion();
 #else
-            var version = serviceProvider.GetService<HttpRequest>()?.HttpContext.GetRequestedApiVersion();
+            var accessor = serviceProvider?.GetService<IHttpContextAccessor>();
+            var version = accessor?.HttpContext?.GetRequestedApiVersion();
 #endif
 
             return version != null && Models.TryGetValue( version, out var model ) ? model : Models[maxVersion];

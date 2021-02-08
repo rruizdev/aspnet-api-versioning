@@ -1,6 +1,14 @@
-﻿namespace Microsoft.AspNet.OData.Builder
+﻿#if WEBAPI
+namespace Microsoft.AspNet.OData.Builder
+#else
+namespace Microsoft.AspNetCore.OData.Query
+#endif
 {
+#if WEBAPI
     using Microsoft.AspNet.OData.Query;
+#else
+    using Microsoft.AspNetCore.OData.Query.Validator;
+#endif
     using System;
     using System.Collections.Generic;
     using System.Linq;

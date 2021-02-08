@@ -1,6 +1,9 @@
-﻿namespace Microsoft.AspNet.OData
+﻿#if WEBAPI
+namespace Microsoft.AspNet.OData
+#else
+namespace Microsoft.AspNetCore.OData
+#endif
 {
-    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OData.Edm;
     using System;
     using System.Collections.Generic;

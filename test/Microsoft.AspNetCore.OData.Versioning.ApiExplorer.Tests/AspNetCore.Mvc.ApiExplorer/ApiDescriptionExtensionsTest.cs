@@ -1,10 +1,10 @@
 ﻿namespace Microsoft.AspNetCore.Mvc.ApiExplorer
 {
     using FluentAssertions;
-    using Microsoft.AspNet.OData.Builder;
-    using Microsoft.AspNet.OData.Simulators.Models;
     using Microsoft.AspNetCore.Mvc.Controllers;
+    using Microsoft.AspNetCore.OData.Simulators.Models;
     using Microsoft.OData.Edm;
+    using Microsoft.OData.ModelBuilder;
     using Xunit;
 
     public class ApiDescriptionExtensionsTest

@@ -1,14 +1,13 @@
 ﻿namespace given_a_versioned_ODataController
 {
     using FluentAssertions;
-    using Microsoft.AspNetCore.OData;
     using Microsoft.AspNetCore.OData.Basic;
     using System.Threading.Tasks;
     using Xunit;
     using static System.Net.HttpStatusCode;
 
-    [Trait( "Routing", "Classic" )]
-    [Collection( nameof( BasicODataCollection ) )]
+    [Trait( "Routing", "Endpoint" )]
+    [Collection( nameof( BasicODataEndpointCollection ) )]
     public class when_using_an_action : BasicAcceptanceTest
     {
         [Theory]
@@ -74,15 +73,6 @@
             response.StatusCode.Should().Be( NoContent );
         }
 
-        public when_using_an_action( BasicFixture fixture ) : base( fixture ) { }
-
-        protected when_using_an_action( ODataFixture fixture ) : base( fixture ) { }
-    }
-
-    [Trait( "Routing", "Endpoint" )]
-    [Collection( nameof( BasicODataEndpointCollection ) )]
-    public class when_using_an_action_ : when_using_an_action
-    {
-        public when_using_an_action_( BasicEndpointFixture fixture ) : base( fixture ) { }
+        public when_using_an_action( BasicEndpointFixture fixture ) : base( fixture ) { }
     }
 }

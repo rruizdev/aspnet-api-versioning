@@ -1,7 +1,16 @@
-﻿namespace Microsoft.AspNet.OData
+﻿#if WEBAPI
+namespace Microsoft.AspNet.OData
+#else
+namespace Microsoft.AspNetCore.OData
+#endif
 {
+#if WEBAPI
     using Newtonsoft.Json;
+#endif
     using System;
+#if !WEBAPI
+    using JsonProperty = System.Text.Json.Serialization.JsonPropertyNameAttribute;
+#endif
 
     /// <summary>
     /// Represents a placeholder for describing OData responses that are represented as an

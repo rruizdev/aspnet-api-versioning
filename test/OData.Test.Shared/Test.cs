@@ -1,7 +1,12 @@
 ﻿namespace Microsoft
 {
+#if WEBAPI
     using Microsoft.AspNet.OData.Builder;
+#endif
     using Microsoft.OData.Edm;
+#if !WEBAPI
+    using Microsoft.OData.ModelBuilder;
+#endif
 
     internal static class Test
     {

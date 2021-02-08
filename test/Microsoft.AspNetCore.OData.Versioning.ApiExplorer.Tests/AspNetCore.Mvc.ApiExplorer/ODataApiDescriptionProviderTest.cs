@@ -1,10 +1,9 @@
 ﻿namespace Microsoft.AspNetCore.Mvc.ApiExplorer
 {
     using FluentAssertions;
-    using Microsoft.AspNet.OData.Builder;
-    using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.OData;
     using Microsoft.AspNetCore.TestHost;
     using Microsoft.Extensions.DependencyInjection;
     using System.Linq;
@@ -20,7 +19,7 @@
                 .ConfigureServices(
                     services =>
                     {
-                        services.AddMvcCore( options => options.EnableEndpointRouting = false );
+                        services.AddControllers();
                         services.AddApiVersioning( options => options.ReportApiVersions = true );
                         services.AddOData().EnableApiVersioning();
                         services.AddODataApiExplorer( options => options.GroupNameFormat = "'v'VVV" );
@@ -28,8 +27,8 @@
                 .Configure(
                     app =>
                     {
-                        var modelBuilder = app.ApplicationServices.GetRequiredService<VersionedODataModelBuilder>();
-                        app.UseMvc( rb => rb.MapVersionedODataRoute( "odata", "api", modelBuilder.GetEdmModels() ) );
+                        app.UseRouting();
+                        app.UseEndpoints( endpoints => endpoints.MapControllers() );
                     } );
             var server = new TestServer( builder );
             var serviceProvider = server.Host.Services;
@@ -49,7 +48,7 @@
             AssertVersion3( groups[3] );
         }
 
-        private void AssertVersion0_9( ApiDescriptionGroup group )
+        static void AssertVersion0_9( ApiDescriptionGroup group )
         {
             const string GroupName = "v0.9";
 
@@ -64,7 +63,7 @@
                 options => options.ExcludingMissingMembers() );
         }
 
-        private void AssertVersion1( ApiDescriptionGroup group )
+        static void AssertVersion1( ApiDescriptionGroup group )
         {
             const string GroupName = "v1";
 
@@ -81,7 +80,7 @@
                 options => options.ExcludingMissingMembers() );
         }
 
-        private void AssertVersion2( ApiDescriptionGroup group )
+        static void AssertVersion2( ApiDescriptionGroup group )
         {
             const string GroupName = "v2";
 
@@ -103,7 +102,7 @@
               options => options.ExcludingMissingMembers() );
         }
 
-        private void AssertVersion3( ApiDescriptionGroup group )
+        static void AssertVersion3( ApiDescriptionGroup group )
         {
             const string GroupName = "v3";
 

@@ -1,9 +1,8 @@
 ﻿namespace Microsoft.Examples.Configuration
 {
-    using Microsoft.AspNet.OData.Builder;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Examples.Models;
-    using System;
+    using Microsoft.OData.ModelBuilder;
 
     /// <summary>
     /// Represents the model configuration for products.
@@ -13,12 +12,10 @@
         /// <inheritdoc />
         public void Apply( ODataModelBuilder builder, ApiVersion apiVersion, string routePrefix )
         {
-            if ( apiVersion < ApiVersions.V3 )
+            if ( apiVersion >= ApiVersions.V3 || apiVersion == ApiVersion.Neutral )
             {
-                return;
+                builder.EntitySet<Product>( "Products" ).EntityType.HasKey( p => p.Id );
             }
-
-            var product = builder.EntitySet<Product>( "Products" ).EntityType.HasKey( p => p.Id );
         }
     }
 }

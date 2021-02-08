@@ -10,8 +10,8 @@
     using Xunit;
     using static System.Net.HttpStatusCode;
 
-    [Trait( "Routing", "Classic" )]
-    [Collection( nameof( ConventionsODataCollection ) )]
+    [Trait( "Routing", "Endpoint" )]
+    [Collection( nameof( ConventionsODataEndpointCollection ) )]
     public class when_using_a_url_segment : ODataAcceptanceTest
     {
         [Theory]
@@ -44,15 +44,6 @@
             content.Error.Code.Should().Be( "UnsupportedApiVersion" );
         }
 
-        public when_using_a_url_segment( ConventionsFixture fixture ) : base( fixture ) { }
-
-        protected when_using_a_url_segment( ODataFixture fixture ) : base( fixture ) { }
-    }
-
-    [Trait( "Routing", "Endpoint" )]
-    [Collection( nameof( ConventionsODataEndpointCollection ) )]
-    public class when_using_a_url_segment_ : when_using_a_url_segment
-    {
-        public when_using_a_url_segment_( ConventionsEndpointFixture fixture ) : base( fixture ) { }
+        public when_using_a_url_segment( ConventionsEndpointFixture fixture ) : base( fixture ) { }
     }
 }

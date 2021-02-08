@@ -191,9 +191,9 @@
         /// <summary>
         /// Explores the OData query options for the specified API descriptions.
         /// </summary>
-        /// <param name="apiDescriptions">The <see cref="IEnumerable{T}">sequence</see> of <see cref="VersionedApiDescription">API descriptions</see> to explore.</param>
+        /// <param name="apiDescriptions">The <see cref="IReadOnlyList{T}">read-only list</see> of <see cref="VersionedApiDescription">API descriptions</see> to explore.</param>
         /// <param name="uriResolver">The associated <see cref="ODataUriResolver">OData URI resolver</see>.</param>
-        protected virtual void ExploreQueryOptions( IEnumerable<VersionedApiDescription> apiDescriptions, ODataUriResolver uriResolver )
+        protected virtual void ExploreQueryOptions( IReadOnlyList<VersionedApiDescription> apiDescriptions, ODataUriResolver uriResolver )
         {
             if ( uriResolver == null )
             {
@@ -333,7 +333,7 @@
 
         static bool WillReadUri( HttpParameterBinding parameterBinding )
         {
-            if ( !( parameterBinding is IValueProviderParameterBinding binding ) )
+            if ( parameterBinding is not IValueProviderParameterBinding binding )
             {
                 return false;
             }

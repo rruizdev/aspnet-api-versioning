@@ -1,12 +1,14 @@
 ﻿namespace Microsoft.Examples.Controllers
 {
-    using Microsoft.AspNet.OData;
-    using Microsoft.AspNet.OData.Query;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.OData.Query;
+    using Microsoft.AspNetCore.OData.Routing.Attributes;
+    using Microsoft.AspNetCore.OData.Routing.Controllers;
     using Models;
 
     [ApiVersion( "3.0" )]
     [ControllerName( "People" )]
+    [ODataModel( "api" )]
     public class People2Controller : ODataController
     {
         // GET ~/api/people?api-version=3.0

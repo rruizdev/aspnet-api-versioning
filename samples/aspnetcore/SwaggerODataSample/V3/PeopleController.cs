@@ -1,20 +1,25 @@
 ﻿namespace Microsoft.Examples.V3
 {
-    using Microsoft.AspNet.OData;
-    using Microsoft.AspNet.OData.Query;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.OData;
+    using Microsoft.AspNetCore.OData.Formatter;
+    using Microsoft.AspNetCore.OData.Query;
+    using Microsoft.AspNetCore.OData.Query.Validator;
+    using Microsoft.AspNetCore.OData.Routing.Attributes;
+    using Microsoft.AspNetCore.OData.Routing.Controllers;
     using Microsoft.Examples.Models;
     using Microsoft.OData;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using static Microsoft.AspNet.OData.Query.AllowedQueryOptions;
     using static Microsoft.AspNetCore.Http.StatusCodes;
+    using static Microsoft.AspNetCore.OData.Query.AllowedQueryOptions;
 
     /// <summary>
     /// Represents a RESTful people service.
     /// </summary>
     [ApiVersion( "3.0" )]
+    [ODataModel( "api" )]
     public class PeopleController : ODataController
     {
         /// <summary>
@@ -23,6 +28,7 @@
         /// <param name="options">The current OData query options.</param>
         /// <returns>All available people.</returns>
         /// <response code="200">The successfully retrieved people.</response>
+        [HttpGet]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( ODataValue<IEnumerable<Person>> ), Status200OK )]
         public IActionResult Get( ODataQueryOptions<Person> options )
@@ -86,6 +92,7 @@
         /// <returns>The requested person.</returns>
         /// <response code="200">The person was successfully retrieved.</response>
         /// <response code="404">The person does not exist.</response>
+        [HttpGet( "{key}" )]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( Person ), Status200OK )]
         [ProducesResponseType( Status404NotFound )]
@@ -120,6 +127,7 @@
         /// <returns>The created person.</returns>
         /// <response code="201">The person was successfully created.</response>
         /// <response code="400">The person was invalid.</response>
+        [HttpPost]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( Person ), Status201Created )]
         [ProducesResponseType( Status400BadRequest )]
@@ -142,7 +150,7 @@
         /// <param name="options">The current OData query options.</param>
         /// <returns>The matching new hires.</returns>
         /// <response code="200">The people were successfully retrieved.</response>
-        [HttpGet]
+        [HttpGet( "[action]" )]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( ODataValue<IEnumerable<Person>> ), Status200OK )]
         public IActionResult NewHires( DateTime since, ODataQueryOptions<Person> options ) => Get( options );
@@ -156,7 +164,7 @@
         /// <response code="204">The person was successfully promoted.</response>
         /// <response code="400">The parameters are invalid.</response>
         /// <response code="404">The person does not exist.</response>
-        [HttpPost]
+        [HttpPost( "{key}/[action]" )]
         [ProducesResponseType( Status204NoContent )]
         [ProducesResponseType( Status400BadRequest )]
         [ProducesResponseType( Status404NotFound )]
@@ -178,7 +186,7 @@
         /// <returns>The person's home address.</returns>
         /// <response code="200">The home address was successfully retrieved.</response>
         /// <response code="404">The person does not exist.</response>
-        [HttpGet]
+        [HttpGet( "{key}/HomeAddress" )]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( Address ), Status200OK )]
         [ProducesResponseType( Status404NotFound )]
@@ -199,7 +207,7 @@
         /// <returns>The person's work address.</returns>
         /// <response code="200">The work address was successfully retrieved.</response>
         /// <response code="404">The person does not exist.</response>
-        [HttpGet]
+        [HttpGet( "{key}/WorkAddress" )]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( Address ), Status200OK )]
         [ProducesResponseType( Status404NotFound )]

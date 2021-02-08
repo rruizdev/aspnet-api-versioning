@@ -4,14 +4,18 @@ namespace Microsoft.Web.Http.Description
 namespace Microsoft.AspNetCore.Mvc.ApiExplorer
 #endif
 {
+#if WEBAPI
     using Microsoft.AspNet.OData;
     using Microsoft.AspNet.OData.Builder;
+#else
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.OData.Query;
+    using Microsoft.AspNetCore.OData.Routing.Controllers;
+#endif
     using System;
 #if WEBAPI
     using System.Web.Http;
     using System.Web.Http.Description;
-#else
-    using Microsoft.AspNetCore.Mvc;
 #endif
 
     /// <summary>
@@ -29,12 +33,6 @@ namespace Microsoft.AspNetCore.Mvc.ApiExplorer
         /// to <c>true</c>. By setting this property to <c>false</c>, these settings are ignored instead of reapplying
         /// <see cref="ApiExplorerSettingsAttribute.IgnoreApi"/> with a value of <c>false</c> to all OData controllers.</remarks>
         public bool UseApiExplorerSettings { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether qualified names are used when building URLs.
-        /// </summary>
-        /// <value>True if qualified names are used when building URLs; otherwise, false. The default value is <c>false</c>.</value>
-        public bool UseQualifiedNames { get; set; }
 
         /// <summary>
         /// Gets or sets the default description used for OData related entity links.

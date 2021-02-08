@@ -1,12 +1,26 @@
-﻿namespace Microsoft.AspNet.OData.Builder
+﻿#if WEBAPI
+namespace Microsoft.AspNet.OData.Builder
+#else
+namespace Microsoft.AspNetCore.OData.Query
+#endif
 {
+#if WEBAPI
     using Microsoft.AspNet.OData.Query;
+#else
+    using Microsoft.AspNetCore.OData.Query;
+#endif
     using System;
     using System.Collections.Generic;
     using System.Text;
+#if WEBAPI
     using static Microsoft.AspNet.OData.Query.AllowedArithmeticOperators;
     using static Microsoft.AspNet.OData.Query.AllowedLogicalOperators;
     using static Microsoft.AspNet.OData.Query.AllowedQueryOptions;
+#else
+    using static Microsoft.AspNetCore.OData.Query.AllowedArithmeticOperators;
+    using static Microsoft.AspNetCore.OData.Query.AllowedLogicalOperators;
+    using static Microsoft.AspNetCore.OData.Query.AllowedQueryOptions;
+#endif
     using static System.Globalization.CultureInfo;
 
     /// <summary>

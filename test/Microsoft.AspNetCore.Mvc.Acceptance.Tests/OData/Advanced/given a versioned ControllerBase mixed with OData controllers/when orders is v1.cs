@@ -7,8 +7,8 @@
     using System.Threading.Tasks;
     using Xunit;
 
-    [Trait( "Routing", "Classic" )]
-    [Collection( nameof( AdvancedODataCollection ) )]
+    [Trait( "Routing", "Endpoint" )]
+    [Collection( nameof( AdvancedODataEndpointCollection ) )]
     public class when_orders_is_v1 : ODataAcceptanceTest
     {
         [Fact]
@@ -67,15 +67,6 @@
             order.Should().BeEquivalentTo( new { Id = 42, Customer = "Customer v1.0" } );
         }
 
-        public when_orders_is_v1( AdvancedFixture fixture ) : base( fixture ) { }
-
-        protected when_orders_is_v1( ODataFixture fixture ) : base( fixture ) { }
-    }
-
-    [Trait( "Routing", "Endpoint" )]
-    [Collection( nameof( AdvancedODataEndpointCollection ) )]
-    public class when_orders_is_v1_ : when_orders_is_v1
-    {
-        public when_orders_is_v1_( AdvancedEndpointFixture fixture ) : base( fixture ) { }
+        public when_orders_is_v1( AdvancedEndpointFixture fixture ) : base( fixture ) { }
     }
 }

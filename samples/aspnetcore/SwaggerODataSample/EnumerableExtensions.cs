@@ -56,7 +56,10 @@
             }
             finally
             {
-                ( iterator as IDisposable )?.Dispose();
+                if ( iterator is IDisposable disposable )
+                {
+                    disposable.Dispose();
+                }
             }
 
             return result;

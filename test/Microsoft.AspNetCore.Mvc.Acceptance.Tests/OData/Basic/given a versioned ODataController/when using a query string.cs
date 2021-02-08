@@ -2,7 +2,6 @@
 {
     using FluentAssertions;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.OData;
     using Microsoft.AspNetCore.OData.Basic;
     using System.Linq;
     using System.Net.Http;
@@ -10,8 +9,8 @@
     using Xunit;
     using static System.Net.HttpStatusCode;
 
-    [Trait( "Routing", "Classic" )]
-    [Collection( nameof( BasicODataCollection ) )]
+    [Trait( "Routing", "Endpoint" )]
+    [Collection( nameof( BasicODataEndpointCollection ) )]
     public class when_using_a_query_string : BasicAcceptanceTest
     {
         [Theory]
@@ -59,15 +58,6 @@
             content.Error.Code.Should().Be( "ApiVersionUnspecified" );
         }
 
-        public when_using_a_query_string( BasicFixture fixture ) : base( fixture ) { }
-
-        protected when_using_a_query_string( ODataFixture fixture ) : base( fixture ) { }
-    }
-
-    [Trait( "Routing", "Endpoint" )]
-    [Collection( nameof( BasicODataEndpointCollection ) )]
-    public class when_using_a_query_string_ : when_using_a_query_string
-    {
-        public when_using_a_query_string_( BasicEndpointFixture fixture ) : base( fixture ) { }
+        public when_using_a_query_string( BasicEndpointFixture fixture ) : base( fixture ) { }
     }
 }

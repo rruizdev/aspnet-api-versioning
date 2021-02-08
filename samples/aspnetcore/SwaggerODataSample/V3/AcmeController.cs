@@ -1,7 +1,10 @@
 ﻿namespace Microsoft.Examples.V3
 {
-    using Microsoft.AspNet.OData;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.OData;
+    using Microsoft.AspNetCore.OData.Query;
+    using Microsoft.AspNetCore.OData.Routing.Attributes;
+    using Microsoft.AspNetCore.OData.Routing.Controllers;
     using Microsoft.Examples.Models;
     using System;
     using System.Collections.Generic;
@@ -12,6 +15,7 @@
     /// Represents a RESTful service for the ACME supplier.
     /// </summary>
     [ApiVersion( "3.0" )]
+    [ODataModel( "api" )]
     public class AcmeController : ODataController
     {
         /// <summary>
@@ -19,6 +23,7 @@
         /// </summary>
         /// <returns>All available suppliers.</returns>
         /// <response code="200">The supplier successfully retrieved.</response>
+        [HttpGet]
         [EnableQuery]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( ODataValue<Supplier> ), Status200OK )]
@@ -28,6 +33,7 @@
         /// Gets the products associated with the supplier.
         /// </summary>
         /// <returns>The associated supplier products.</returns>
+        [HttpGet( "Products" )]
         [EnableQuery]
         public IQueryable<Product> GetProducts() => NewSupplier().Products.AsQueryable();
 
@@ -37,22 +43,21 @@
         /// <param name="navigationProperty">The product to link.</param>
         /// <param name="link">The product identifier.</param>
         /// <returns>None</returns>
-        [HttpPost]
+        [HttpPost( "{navigationProperty}/$ref" )]
         [ProducesResponseType( Status204NoContent )]
         [ProducesResponseType( Status404NotFound )]
-        public IActionResult CreateRef( [FromODataUri] string navigationProperty, [FromBody] Uri link ) => NoContent();
-
-        // TODO: OData doesn't seem to currently support this action in ASP.NET Core, but it works in Web API
+        public IActionResult CreateRef( string navigationProperty, [FromBody] Uri link ) => NoContent();
 
         /// <summary>
         /// Unlinks a product from a supplier.
         /// </summary>
-        /// <param name="relatedKey">The related product identifier.</param>
         /// <param name="navigationProperty">The product to unlink.</param>
+        /// <param name="relatedKey">The related product identifier.</param>
         /// <returns>None</returns>
+        [HttpDelete( "{navigationProperty}/$ref" )]
         [ProducesResponseType( Status204NoContent )]
         [ProducesResponseType( Status404NotFound )]
-        public IActionResult DeleteRef( [FromODataUri] string relatedKey, string navigationProperty ) => NoContent();
+        public IActionResult DeleteRef( string navigationProperty, [FromQuery( Name = "$id" )] string relatedKey ) => NoContent();
 
         private static Supplier NewSupplier() =>
             new Supplier()

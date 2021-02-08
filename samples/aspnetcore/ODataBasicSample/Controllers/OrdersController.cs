@@ -1,15 +1,17 @@
 ﻿namespace Microsoft.Examples.Controllers
 {
-    using Microsoft.AspNet.OData;
-    using Microsoft.AspNet.OData.Query;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.OData.Query;
+    using Microsoft.AspNetCore.OData.Routing.Attributes;
+    using Microsoft.AspNetCore.OData.Routing.Controllers;
     using Models;
 
     [ApiVersion( "1.0" )]
     [ApiVersion( "2.0" )]
+    [ODataModel( "api/v{version:apiVersion}" )]
     public class OrdersController : ODataController
     {
-        // GET ~/v1/orders
+        // GET ~/api/v1/orders
         [HttpGet]
         public IActionResult Get( ODataQueryOptions<Order> options ) =>
             Ok( new[] { new Order() { Id = 1, Customer = "Bill Mei" } } );

@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.Examples.Configuration
 {
-    using Microsoft.AspNet.OData.Builder;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.OData.ModelBuilder;
     using Models;
 
     public class OrderModelConfiguration : IModelConfiguration
@@ -25,7 +25,7 @@
             }
 
             // note: the EDM for orders is only available in version 1.0
-            if ( apiVersion == V1 )
+            if ( apiVersion == V1 || apiVersion == ApiVersion.Neutral )
             {
                 ConfigureCurrent( builder );
             }

@@ -1,7 +1,12 @@
-﻿namespace Microsoft.AspNet.OData
+﻿#if WEBAPI
+namespace Microsoft.AspNet.OData
+#else
+namespace Microsoft.AspNetCore.OData
+#endif
 {
 #if !WEBAPI
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.OData.Results;
 #endif
     using Microsoft.OData.Edm;
 #if WEBAPI

@@ -1,10 +1,9 @@
 ﻿namespace Microsoft.AspNetCore.OData
 {
-    using Microsoft.AspNet.OData;
-    using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ApplicationParts;
     using Microsoft.AspNetCore.OData.Configuration;
+    using Microsoft.AspNetCore.OData.Routing.Controllers;
     using Microsoft.Extensions.DependencyInjection;
     using System.Reflection;
 

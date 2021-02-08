@@ -1,11 +1,13 @@
 ﻿namespace Microsoft.Examples.Models
 {
+    using Microsoft.OData.ModelBuilder;
     using System;
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// Represents a person.
     /// </summary>
+    [Select]
     public class Person
     {
         /// <summary>

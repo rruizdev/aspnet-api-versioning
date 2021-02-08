@@ -2,7 +2,6 @@
 {
     using FluentAssertions;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.OData;
     using Microsoft.AspNetCore.OData.Basic;
     using System.Linq;
     using System.Net.Http;
@@ -10,8 +9,8 @@
     using Xunit;
     using static System.Net.HttpStatusCode;
 
-    [Trait( "Routing", "Classic" )]
-    [Collection( nameof( BasicODataCollection ) )]
+    [Trait( "Routing", "Endpoint" )]
+    [Collection( nameof( BasicODataEndpointCollection ) )]
     public class when_using_a_query_string_and_split_into_two_types : BasicAcceptanceTest
     {
         [Theory]
@@ -108,15 +107,6 @@
             content.Error.Code.Should().Be( "ApiVersionUnspecified" );
         }
 
-        public when_using_a_query_string_and_split_into_two_types( BasicFixture fixture ) : base( fixture ) { }
-
-        protected when_using_a_query_string_and_split_into_two_types( ODataFixture fixture ) : base( fixture ) { }
-    }
-
-    [Trait( "Routing", "Endpoint" )]
-    [Collection( nameof( BasicODataEndpointCollection ) )]
-    public class when_using_a_query_string_and_split_into_two_types_ : when_using_a_query_string_and_split_into_two_types
-    {
-        public when_using_a_query_string_and_split_into_two_types_( BasicEndpointFixture fixture ) : base( fixture ) { }
+        public when_using_a_query_string_and_split_into_two_types( BasicEndpointFixture fixture ) : base( fixture ) { }
     }
 }

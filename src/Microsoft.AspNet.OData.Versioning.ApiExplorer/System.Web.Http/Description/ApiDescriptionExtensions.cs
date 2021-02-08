@@ -31,7 +31,7 @@
         /// <returns>The associated <see cref="IEdmEntitySet">entity set</see> or <c>null</c> if there is no associated entity set.</returns>
         public static IEdmEntitySet? EntitySet( this ApiDescription apiDescription )
         {
-            if ( !( apiDescription is VersionedApiDescription description ) )
+            if ( apiDescription is not VersionedApiDescription description )
             {
                 return default;
             }

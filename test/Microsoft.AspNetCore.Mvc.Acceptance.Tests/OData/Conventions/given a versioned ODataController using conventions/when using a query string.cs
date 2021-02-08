@@ -10,8 +10,8 @@
     using Xunit;
     using static System.Net.HttpStatusCode;
 
-    [Trait( "Routing", "Classic" )]
-    [Collection( nameof( ConventionsODataCollection ) )]
+    [Trait( "Routing", "Endpoint" )]
+    [Collection( nameof( ConventionsODataEndpointCollection ) )]
     public class when_using_a_query_string : ODataAcceptanceTest
     {
         [Theory]
@@ -59,15 +59,6 @@
             content.Error.Code.Should().Be( "ApiVersionUnspecified" );
         }
 
-        public when_using_a_query_string( ConventionsFixture fixture ) : base( fixture ) { }
-
-        protected when_using_a_query_string( ODataFixture fixture ) : base( fixture ) { }
-    }
-
-    [Trait( "Routing", "Endpoint" )]
-    [Collection( nameof( ConventionsODataEndpointCollection ) )]
-    public class when_using_a_query_string_ : when_using_a_query_string
-    {
-        public when_using_a_query_string_( ConventionsEndpointFixture fixture ) : base( fixture ) { }
+        public when_using_a_query_string( ConventionsEndpointFixture fixture ) : base( fixture ) { }
     }
 }

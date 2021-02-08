@@ -1,20 +1,25 @@
 ﻿namespace Microsoft.Examples.V3
 {
-    using Microsoft.AspNet.OData;
-    using Microsoft.AspNet.OData.Routing;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.OData;
+    using Microsoft.AspNetCore.OData.Formatter;
+    using Microsoft.AspNetCore.OData.Formatter.Value;
+    using Microsoft.AspNetCore.OData.Query;
+    using Microsoft.AspNetCore.OData.Results;
+    using Microsoft.AspNetCore.OData.Routing.Attributes;
+    using Microsoft.AspNetCore.OData.Routing.Controllers;
     using Microsoft.Examples.Models;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using static Microsoft.AspNet.OData.Query.AllowedQueryOptions;
     using static Microsoft.AspNetCore.Http.StatusCodes;
+    using static Microsoft.AspNetCore.OData.Query.AllowedQueryOptions;
 
     /// <summary>
     /// Represents a RESTful service of orders.
     /// </summary>
     [ApiVersion( "3.0" )]
-    [ODataRoutePrefix( "Orders" )]
+    [ODataModel( "api" )]
     public class OrdersController : ODataController
     {
         /// <summary>
@@ -23,7 +28,7 @@
         /// <returns>All available orders.</returns>
         /// <response code="200">Orders successfully retrieved.</response>
         /// <response code="400">The order is invalid.</response>
-        [ODataRoute]
+        [HttpGet]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( ODataValue<IEnumerable<Order>> ), Status200OK )]
         [EnableQuery( MaxTop = 100, AllowedQueryOptions = Select | Top | Skip | Count )]
@@ -46,7 +51,7 @@
         /// <returns>The requested order.</returns>
         /// <response code="200">The order was successfully retrieved.</response>
         /// <response code="404">The order does not exist.</response>
-        [ODataRoute( "{key}" )]
+        [HttpGet( "{key}" )]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( Order ), Status200OK )]
         [ProducesResponseType( Status404NotFound )]
@@ -60,7 +65,7 @@
         /// <returns>The created order.</returns>
         /// <response code="201">The order was successfully placed.</response>
         /// <response code="400">The order is invalid.</response>
-        [ODataRoute]
+        [HttpPost]
         [ProducesResponseType( typeof( Order ), Status201Created )]
         [ProducesResponseType( Status400BadRequest )]
         public IActionResult Post( [FromBody] Order order )
@@ -84,9 +89,9 @@
         /// <response code="204">The order was successfully updated.</response>
         /// <response code="400">The order is invalid.</response>
         /// <response code="404">The order does not exist.</response>
-        [ODataRoute( "{key}" )]
+        [HttpPatch( "{key}" )]
         [Produces( "application/json" )]
-        [ProducesResponseType( typeof( Order), Status200OK )]
+        [ProducesResponseType( typeof( Order ), Status200OK )]
         [ProducesResponseType( Status204NoContent )]
         [ProducesResponseType( Status400BadRequest )]
         [ProducesResponseType( Status404NotFound )]
@@ -112,7 +117,7 @@
         /// <returns>None</returns>
         /// <response code="204">The order was successfully canceled.</response>
         /// <response code="404">The order does not exist.</response>
-        [ODataRoute( "{key}" )]
+        [HttpDelete( "{key}" )]
         [ProducesResponseType( Status204NoContent )]
         [ProducesResponseType( Status404NotFound )]
         public IActionResult Delete( int key, bool suspendOnly ) => NoContent();
@@ -123,8 +128,7 @@
         /// <returns>The most expensive order.</returns>
         /// <response code="200">The order was successfully retrieved.</response>
         /// <response code="404">The no orders exist.</response>
-        [HttpGet]
-        [ODataRoute( nameof( MostExpensive ) )]
+        [HttpGet( "[action]" )]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( Order ), Status200OK )]
         [ProducesResponseType( Status404NotFound )]
@@ -140,8 +144,7 @@
         /// <response code="204">The order was successfully rated.</response>
         /// <response code="400">The parameters are invalid.</response>
         /// <response code="404">The order does not exist.</response>
-        [HttpPost]
-        [ODataRoute( "{key}/Rate" )]
+        [HttpPost( "{key}/[action]" )]
         [ProducesResponseType( Status204NoContent )]
         [ProducesResponseType( Status400BadRequest )]
         [ProducesResponseType( Status404NotFound )]
@@ -163,8 +166,7 @@
         /// <returns>The order line items.</returns>
         /// <response code="200">The line items were successfully retrieved.</response>
         /// <response code="404">The order does not exist.</response>
-        [HttpGet]
-        [ODataRoute( "{key}/LineItems" )]
+        [HttpGet( "{key}/[action]" )]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( ODataValue<IEnumerable<LineItem>> ), Status200OK )]
         [ProducesResponseType( Status404NotFound )]

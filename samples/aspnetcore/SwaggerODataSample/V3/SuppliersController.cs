@@ -1,7 +1,12 @@
 ﻿namespace Microsoft.Examples.V3
 {
-    using Microsoft.AspNet.OData;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.OData;
+    using Microsoft.AspNetCore.OData.Formatter.Value;
+    using Microsoft.AspNetCore.OData.Query;
+    using Microsoft.AspNetCore.OData.Results;
+    using Microsoft.AspNetCore.OData.Routing.Attributes;
+    using Microsoft.AspNetCore.OData.Routing.Controllers;
     using Microsoft.Examples.Models;
     using System;
     using System.Collections.Generic;
@@ -12,6 +17,7 @@
     /// Represents a RESTful service of suppliers.
     /// </summary>
     [ApiVersion( "3.0" )]
+    [ODataModel( "api" )]
     public class SuppliersController : ODataController
     {
         private readonly IQueryable<Supplier> suppliers = new[] { NewSupplier( 1 ), NewSupplier( 2 ), NewSupplier( 3 ), }.AsQueryable();
@@ -21,6 +27,7 @@
         /// </summary>
         /// <returns>All available suppliers.</returns>
         /// <response code="200">Suppliers successfully retrieved.</response>
+        [HttpGet]
         [EnableQuery]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( ODataValue<IEnumerable<Supplier>> ), Status200OK )]
@@ -33,11 +40,12 @@
         /// <returns>The requested supplier.</returns>
         /// <response code="200">The supplier was successfully retrieved.</response>
         /// <response code="404">The supplier does not exist.</response>
+        [HttpGet( "{key}" )]
         [EnableQuery]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( Supplier ), Status200OK )]
         [ProducesResponseType( Status404NotFound )]
-        public SingleResult<Supplier> Get( [FromODataUri] int key ) => SingleResult.Create( suppliers.Where( p => p.Id == key ) );
+        public SingleResult<Supplier> Get( int key ) => SingleResult.Create( suppliers.Where( p => p.Id == key ) );
 
         /// <summary>
         /// Creates a new supplier.
@@ -47,6 +55,7 @@
         /// <response code="201">The supplier was successfully created.</response>
         /// <response code="204">The supplier was successfully created.</response>
         /// <response code="400">The supplier is invalid.</response>
+        [HttpPost]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( Supplier ), Status201Created )]
         [ProducesResponseType( Status204NoContent )]
@@ -73,12 +82,13 @@
         /// <response code="204">The supplier was successfully updated.</response>
         /// <response code="400">The supplier is invalid.</response>
         /// <response code="404">The supplier does not exist.</response>
+        [HttpPatch( "{key}" )]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( Supplier ), Status200OK )]
         [ProducesResponseType( Status204NoContent )]
         [ProducesResponseType( Status400BadRequest )]
         [ProducesResponseType( Status404NotFound )]
-        public IActionResult Patch( [FromODataUri] int key, Delta<Supplier> delta )
+        public IActionResult Patch( int key, Delta<Supplier> delta )
         {
             if ( !ModelState.IsValid )
             {
@@ -102,12 +112,13 @@
         /// <response code="204">The supplier was successfully updated.</response>
         /// <response code="400">The supplier is invalid.</response>
         /// <response code="404">The supplier does not exist.</response>
+        [HttpPut( "{key}" )]
         [Produces( "application/json" )]
         [ProducesResponseType( typeof( Supplier ), Status200OK )]
         [ProducesResponseType( Status204NoContent )]
         [ProducesResponseType( Status400BadRequest )]
         [ProducesResponseType( Status404NotFound )]
-        public IActionResult Put( [FromODataUri] int key, [FromBody] Supplier update )
+        public IActionResult Put( int key, [FromBody] Supplier update )
         {
             if ( !ModelState.IsValid )
             {
@@ -123,17 +134,19 @@
         /// <param name="key">The supplier to delete.</param>
         /// <returns>None</returns>
         /// <response code="204">The supplier was successfully deleted.</response>
+        [HttpDelete( "{key}" )]
         [ProducesResponseType( Status204NoContent )]
         [ProducesResponseType( Status404NotFound )]
-        public IActionResult Delete( [FromODataUri] int key ) => NoContent();
+        public IActionResult Delete( int key ) => NoContent();
 
         /// <summary>
         /// Gets the products associated with the supplier.
         /// </summary>
         /// <param name="key">The supplier identifier.</param>
         /// <returns>The associated supplier products.</returns>
+        [HttpGet( "{key}/Products" )]
         [EnableQuery]
-        public IQueryable<Product> GetProducts( [FromODataUri] int key ) => suppliers.Where( s => s.Id == key ).SelectMany( s => s.Products );
+        public IQueryable<Product> GetProducts( int key ) => suppliers.Where( s => s.Id == key ).SelectMany( s => s.Products );
 
         /// <summary>
         /// Links a product to a supplier.
@@ -142,10 +155,10 @@
         /// <param name="navigationProperty">The product to link.</param>
         /// <param name="link">The product identifier.</param>
         /// <returns>None</returns>
-        [HttpPost]
+        [HttpPost( "{key}/Products/$ref" )]
         [ProducesResponseType( Status204NoContent )]
         [ProducesResponseType( Status404NotFound )]
-        public IActionResult CreateRefToProducts( [FromODataUri] int key, [FromODataUri] string navigationProperty, [FromBody] Uri link ) => NoContent();
+        public IActionResult CreateRefToProducts( int key, string navigationProperty, [FromBody] Uri link ) => NoContent();
 
         // TODO: OData doesn't seem to currently support this action in ASP.NET Core, but it works in Web API
 
@@ -153,12 +166,13 @@
         /// Unlinks a product from a supplier.
         /// </summary>
         /// <param name="key">The supplier identifier.</param>
-        /// <param name="relatedKey">The related product identifier.</param>
         /// <param name="navigationProperty">The product to unlink.</param>
+        /// <param name="relatedKey">The related product identifier.</param>
         /// <returns>None</returns>
+        [HttpDelete( "{key}/Products/$ref" )]
         [ProducesResponseType( Status204NoContent )]
         [ProducesResponseType( Status404NotFound )]
-        public IActionResult DeleteRefToProducts( [FromODataUri] int key, [FromODataUri] string relatedKey, string navigationProperty ) => NoContent();
+        public IActionResult DeleteRefToProducts( int key, string navigationProperty, [FromQuery( Name = "$id" )] string relatedKey ) => NoContent();
 
         private static Supplier NewSupplier( int id ) =>
             new Supplier()

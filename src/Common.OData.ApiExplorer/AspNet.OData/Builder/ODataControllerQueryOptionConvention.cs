@@ -1,12 +1,17 @@
-﻿namespace Microsoft.AspNet.OData.Builder
-{
-    using Microsoft.AspNet.OData.Query;
-#if !WEBAPI
-    using Microsoft.AspNetCore.Mvc.ApiExplorer;
-    using Microsoft.AspNetCore.Mvc.Controllers;
+﻿#if WEBAPI
+namespace Microsoft.AspNet.OData.Builder
 #else
+namespace Microsoft.AspNetCore.OData.Query
+#endif
+{
+#if WEBAPI
+    using Microsoft.AspNet.OData.Query;
     using System.Web.Http.Description;
     using ControllerActionDescriptor = System.Web.Http.Controllers.ReflectedHttpActionDescriptor;
+#else
+    using Microsoft.AspNetCore.Mvc.ApiExplorer;
+    using Microsoft.AspNetCore.Mvc.Controllers;
+    using Microsoft.AspNetCore.OData.Query.Validator;
 #endif
 
     sealed class ODataControllerQueryOptionConvention : IODataQueryOptionsConvention
@@ -24,7 +29,7 @@
 
         public void ApplyTo( ApiDescription apiDescription )
         {
-            if ( !( apiDescription.ActionDescriptor is ControllerActionDescriptor action ) )
+            if ( apiDescription.ActionDescriptor is not ControllerActionDescriptor action )
             {
                 return;
             }

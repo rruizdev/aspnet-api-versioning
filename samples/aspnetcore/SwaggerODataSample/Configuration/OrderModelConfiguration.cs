@@ -1,8 +1,8 @@
 ﻿namespace Microsoft.Examples.Configuration
 {
-    using Microsoft.AspNet.OData.Builder;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Examples.Models;
+    using Microsoft.OData.ModelBuilder;
 
     /// <summary>
     /// Represents the model configuration for orders.
@@ -14,6 +14,13 @@
         {
             var order = builder.EntitySet<Order>( "Orders" ).EntityType.HasKey( o => o.Id );
             var lineItem = builder.EntityType<LineItem>().HasKey( li => li.Number );
+
+            if ( apiVersion == ApiVersion.Neutral )
+            {
+                order.Collection.Function( "MostExpensive" ).ReturnsFromEntitySet<Order>( "Orders" );
+                order.Action( "Rate" ).Parameter<int>( "rating" );
+                return;
+            }
 
             if ( apiVersion < ApiVersions.V2 )
             {

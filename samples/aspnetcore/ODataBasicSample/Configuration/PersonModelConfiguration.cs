@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.Examples.Configuration
 {
-    using Microsoft.AspNet.OData.Builder;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.OData.ModelBuilder;
     using Models;
 
     public class PersonModelConfiguration : IModelConfiguration

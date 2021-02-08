@@ -1,4 +1,8 @@
-﻿namespace Microsoft.AspNet.OData
+﻿#if WEBAPI
+namespace Microsoft.AspNet.OData
+#else
+namespace Microsoft.AspNetCore.OData
+#endif
 {
 #if WEBAPI
     using Microsoft.Web.Http;

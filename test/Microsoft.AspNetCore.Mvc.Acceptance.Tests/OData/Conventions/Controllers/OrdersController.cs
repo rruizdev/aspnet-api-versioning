@@ -1,9 +1,9 @@
 ﻿namespace Microsoft.AspNetCore.OData.Conventions.Controllers
 {
-    using Microsoft.AspNet.OData;
-    using Microsoft.AspNet.OData.Query;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.OData.Models;
+    using Microsoft.AspNetCore.OData.Query;
+    using Microsoft.AspNetCore.OData.Routing.Controllers;
 
     public class OrdersController : ODataController
     {

@@ -1,4 +1,8 @@
+#if WEBAPI
 namespace Microsoft.AspNet.OData
+#else
+namespace Microsoft.AspNetCore.OData
+#endif
 {
     using System.Collections.Generic;
     using System.Linq;

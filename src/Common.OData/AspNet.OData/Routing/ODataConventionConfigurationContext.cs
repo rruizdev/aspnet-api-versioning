@@ -1,4 +1,5 @@
-﻿namespace Microsoft.AspNet.OData.Routing
+﻿#if WEBAPI
+namespace Microsoft.AspNet.OData.Routing
 {
     using Microsoft.AspNet.OData.Routing.Conventions;
 #if !WEBAPI
@@ -59,3 +60,4 @@
         }
     }
 }
+#endif

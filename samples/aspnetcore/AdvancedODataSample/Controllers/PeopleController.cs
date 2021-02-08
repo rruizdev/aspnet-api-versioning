@@ -1,14 +1,17 @@
 ﻿namespace Microsoft.Examples.Controllers
 {
-    using Microsoft.AspNet.OData;
-    using Microsoft.AspNet.OData.Query;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.OData.Formatter.Value;
+    using Microsoft.AspNetCore.OData.Query;
+    using Microsoft.AspNetCore.OData.Routing.Attributes;
+    using Microsoft.AspNetCore.OData.Routing.Controllers;
     using Microsoft.Examples.Models;
 
     // note: since the application is configured with AssumeDefaultVersionWhenUnspecified, this controller
     // is resolved without or without an API version, even though it is explicitly versioned
     [ApiVersion( "1.0" )]
     [ApiVersion( "2.0" )]
+    [ODataModel( "api" )]
     public class PeopleController : ODataController
     {
         // GET ~/api/people

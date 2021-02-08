@@ -1,4 +1,8 @@
-﻿namespace Microsoft.AspNet.OData.Builder
+﻿#if WEBAPI
+namespace Microsoft.AspNet.OData.Builder
+#else
+namespace Microsoft.OData.ModelBuilder
+#endif
 {
 #if !WEBAPI
     using Microsoft.AspNetCore.Mvc;

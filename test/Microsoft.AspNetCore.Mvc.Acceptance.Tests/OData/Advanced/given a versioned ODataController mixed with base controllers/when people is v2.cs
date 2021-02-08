@@ -8,8 +8,8 @@
     using Xunit;
     using static System.Net.HttpStatusCode;
 
-    [Trait( "Routing", "Classic" )]
-    [Collection( nameof( AdvancedODataCollection ) )]
+    [Trait( "Routing", "Endpoint" )]
+    [Collection( nameof( AdvancedODataEndpointCollection ) )]
     public class when_people_is_v2 : ODataAcceptanceTest
     {
         [Fact]
@@ -70,15 +70,6 @@
             response.StatusCode.Should().Be( BadRequest );
         }
 
-        public when_people_is_v2( AdvancedFixture fixture ) : base( fixture ) { }
-
-        protected when_people_is_v2( ODataFixture fixture ) : base( fixture ) { }
-    }
-
-    [Trait( "Routing", "Endpoint" )]
-    [Collection( nameof( AdvancedODataEndpointCollection ) )]
-    public class when_people_is_v2_ : when_people_is_v2
-    {
-        public when_people_is_v2_( AdvancedEndpointFixture fixture ) : base( fixture ) { }
+        public when_people_is_v2( AdvancedEndpointFixture fixture ) : base( fixture ) { }
     }
 }

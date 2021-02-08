@@ -1,7 +1,6 @@
 ﻿namespace Microsoft.Examples.Models
 {
-    using Microsoft.AspNet.OData.Query;
-    using System;
+    using Microsoft.OData.ModelBuilder;
 
     /// <summary>
     /// Represents the line item on an order.

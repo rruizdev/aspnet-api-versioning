@@ -1,11 +1,13 @@
 ﻿namespace Microsoft.Examples.Controllers
 {
-    using Microsoft.AspNet.OData;
-    using Microsoft.AspNet.OData.Query;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.OData.Query;
+    using Microsoft.AspNetCore.OData.Routing.Attributes;
+    using Microsoft.AspNetCore.OData.Routing.Controllers;
     using Microsoft.Examples.Models;
 
     [ApiVersion( "2.0" )]
+    [ODataModel( "api" )]
     [ControllerName( "Orders" )]
     public class Orders2Controller : ODataController
     {
