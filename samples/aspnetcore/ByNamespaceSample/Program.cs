@@ -1,16 +1,23 @@
-﻿namespace Microsoft.Examples
-{
-    using Microsoft.AspNetCore;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Versioning.Conventions;
+using Microsoft.Extensions.DependencyInjection;
 
-    public static class Program
+var builder = WebApplication.CreateBuilder();
+
+builder.Services.AddControllers();
+builder.Services.AddApiVersioning(
+    options =>
     {
-        public static void Main( string[] args ) =>
-            CreateWebHostBuilder( args ).Build().Run();
+        // reporting api versions will return the headers "api-supported-versions" and "api-deprecated-versions"
+        options.ReportApiVersions = true;
 
-        public static IWebHostBuilder CreateWebHostBuilder( string[] args ) =>
-            WebHost.CreateDefaultBuilder( args )
-                   .UseStartup<Startup>();
-    }
-}
+        // automatically applies an api version based on the name of the defining controller's namespace
+        options.Conventions.Add( new VersionByNamespaceConvention() );
+    } );
+
+var app = builder.Build();
+
+app.UseRouting();
+app.UseEndpoints( builder => builder.MapControllers() );
+
+app.Run();
